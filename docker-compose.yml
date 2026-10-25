@@ -1,0 +1,19 @@
+services:
+  # Container 1: site estático com imagem customizada (nginx + index.html)
+  site:
+    build: .
+    image: meu-nginx-custom
+    container_name: site_custom
+    ports:
+      - "8080:80"
+
+  # Container 2: segundo app HTTP simples (Apache httpd) servindo outra página
+  app2:
+    image: httpd:alpine
+    container_name: app2_httpd
+    ports:
+      - "8081:80"
+    volumes:
+      - ./app2:/usr/local/apache2/htdocs/:ro
+    depends_on:
+      - site
